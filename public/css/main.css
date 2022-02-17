@@ -5,7 +5,7 @@ body {
 nav {
     display: flex !important;
     justify-content: space-between !important;
-    background-color: #454d55!important;
+    background-color: rgb(46, 41, 41)!important;
 }
 
 nav h3 {
@@ -195,7 +195,7 @@ select {
 }
 
 footer {
-    background: #454d55;
+    background: rgb(29, 28, 28);
     padding: 20px;
     text-align: center;
     margin-top: 50px;
@@ -204,4 +204,47 @@ footer {
 
 footer i {
     margin-right: 5px;
+}
+
+.Qua {
+    animation: moveToRight 3s;
+}
+
+.Pri {
+    animation: moveToLeft 3s;
+}
+
+.pro {
+    animation: wipe-enter 2s;
+}
+
+@keyframes moveToRight {
+    0% {
+        transform: translateX(-120px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes moveToLeft {
+    0% {
+        transform: translateX(120px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes wipe-enter {
+    0% {
+        transform: scale(0, .025);
+    }
+    50% {
+        transform: scale(1, .025);
+    }
 }

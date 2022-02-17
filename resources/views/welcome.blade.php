@@ -46,12 +46,12 @@
 
             <div class="d-flex justify-content-around m-4">
 
-              <div class="m-5">
+              <div class="m-5 start ">
                 <img src="/img/quality.png" width="200" height="200" alt="">
                 <h1 class="font-weight-bold">High Quality Products</h1>
               </div>
   
-              <div class="m-5">
+              <div class="m-5 start2 ">
                 <img src="/img/price.png" width="200" height="200" alt="">
                 <h1 class="font-weight-bold">With Best Prices</h1>
               </div>
@@ -86,7 +86,7 @@
               $images = explode('|', $product->image_path);
                   
               @endphp
-              <div class="card border-0 rounded-0 m-2" style="width:250px">
+              <div class=" start3 card border-0 rounded-0 m-2" style="width:250px">
                  
                   <img class="card-img-top rounded-0" src="{{ URL::to($images[0])}}" alt="Card image">
 
@@ -133,3 +133,51 @@
         </div>
     @endsection
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+function isElementInViewport(elem) {
+    var $elem = $(elem);
+
+    // Get the scroll position of the page.
+    var scrollElem = ((navigator.userAgent.toLowerCase().indexOf('webkit') != -1) ? 'body' : 'html');
+    var viewportTop = $(scrollElem).scrollTop();
+    var viewportBottom = viewportTop + $(window).height();
+
+    // Get the position of the element on the page.
+    var elemTop = Math.round( $elem.offset().top );
+    var elemBottom = elemTop + $elem.height();
+
+    return ((elemTop < viewportBottom) && (elemBottom > viewportTop));
+}
+
+// Check if it's time to start the animation.
+function checkAnimation(elem) {
+    var $elem = elem;
+
+    // If the animation has already been started
+    if ($elem.hasClass('Qua') || $elem.hasClass('Pri') ) return;
+
+    if (isElementInViewport($elem)) {
+        // Start the animation
+        if($elem.hasClass('start'))
+        $elem.addClass('Qua');
+        if($elem.hasClass('start2'))
+        $elem.addClass('Pri');
+        if($elem.hasClass('start3'))
+        $elem.addClass('Pro');
+        
+
+    }
+}
+
+// Capture scroll events
+$(window).scroll(function(){
+    checkAnimation($('.start'));
+    checkAnimation($('.start2'));
+    checkAnimation($('.start3'));
+});
+
+
+
+    </script>
