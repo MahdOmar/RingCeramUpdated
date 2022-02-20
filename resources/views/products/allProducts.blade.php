@@ -3,7 +3,7 @@
 
 <div class="container-fluid ">
   
-   <div class="mb-2" style="border-bottom: 2px solid rgb(15, 132, 228); ">
+   <div class="mb-2"  >
     <h2 class=" m-2 p-3" style="display:inline-block" >Products</h2>
     <div class="mt-2 d-flex" style="float: right;display:inline-block; width:350px">
       <label class="m-2 mt-3 " for="Categorie">Categorie</label> 
@@ -32,7 +32,7 @@
             $images = explode('|', $product->image_path);
             
           @endphp 
-        <div class="card rounded-0  border-0 m-2" style="width:250px">
+        <div class="pro card rounded-0  border-0 m-2" style="width:250px">
           <img class="card-img-top rounded-0" src="{{ URL::to($images[0])}}" alt="Card image">
           <div class="card-body">
             <h4 class="card-title text-capitalize">{{ $product->Designation }}</h4>
@@ -102,7 +102,7 @@ $(function(){
               $.each(result.Products.data, function(key, item){
                var images = item.image_path.split("|")
                 $('.products').append('\
-                <div class="card m-2 rounded-0  border-0" style="width:250px">\
+                <div class="pro card m-2 rounded-0  border-0" style="width:250px">\
                 <img class="card-img-top rounded-0" src="'+images[0]+'" alt="Card image">\
                 <div class="card-body">\
                   <h4 class="card-title text-capitalize">'+item.Designation+'</h4>\
@@ -139,6 +139,9 @@ $(function(){
        });
       
    });
+
+
+   
 
 
 

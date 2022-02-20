@@ -33,9 +33,12 @@
       
     </head>
     <body>
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar navbar-inverse sticky-top  ">
             <div class="header">
-        <h3 class="mt-2 ml-2">Ring Ceram</h3>
+                <div >
+                    <a href="/" class="ml-4 "><img  src="/img/logo2.png" class="ml-4 rounded" width="120" height="60" alt=""></a> 
+
+                </div>
         @guest
             
        
@@ -97,8 +100,20 @@
 
 
 <div class="main d-flex">
-    <div class="side-bar bg-dark "> 
-        <ul>
+    <div class=" side-bar bg-white shadow " > 
+        <hr style="position: relative; top:-15px">
+
+        <div class="text-center">
+            <img  src="/img/user.png" width="80" height="90" alt="" >
+            <p class="mt-2" style="font-weight: bold"> {{ Auth::user()->name }} (Admin)</p>
+           
+
+        </div>
+        <hr>
+
+        
+        
+        <ul class="text center">
             <li><a href="/dashboard"> <i class="fas fa-chart-line"></i>Dashboard</a></li>
         <li><a  href="/dashboard/products"><i class="fas fa-warehouse"></i></i>Stock</a></li>
       <li> <a href="/dashboard/commandes" ><i class="fas fa-clipboard-list"></i>Commandes</a></li>

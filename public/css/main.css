@@ -5,11 +5,11 @@ body {
 nav {
     display: flex !important;
     justify-content: space-between !important;
-    background-color: rgb(46, 41, 41)!important;
+    background-color: white!important;
 }
 
 nav h3 {
-    color: white;
+    color: black;
 }
 
 .header {
@@ -26,7 +26,8 @@ nav ul li a:hover {
 
 a {
     text-decoration: none !important;
-    color: white;
+    color: black;
+    font-weight: bold;
 }
 
 a:hover {
@@ -195,15 +196,19 @@ select {
 }
 
 footer {
-    background: rgb(29, 28, 28);
+    background: white;
     padding: 20px;
     text-align: center;
     margin-top: 50px;
-    color: white;
+    color: black;
 }
 
 footer i {
     margin-right: 5px;
+}
+
+footer li {
+    font-weight: bold;
 }
 
 .Qua {
@@ -215,7 +220,7 @@ footer i {
 }
 
 .pro {
-    animation: wipe-enter 2s;
+    animation: wipe-enter 3s;
 }
 
 @keyframes moveToRight {
@@ -243,8 +248,10 @@ footer i {
 @keyframes wipe-enter {
     0% {
         transform: scale(0, .025);
+        opacity: 0;
     }
     50% {
         transform: scale(1, .025);
+        opacity: 1;
     }
 }
