@@ -66,7 +66,7 @@ class CommandeController extends Controller
               $commande->Name = request('name');
               $commande->phone = request('phone');
               $commande->Designation = request('des');
-              $commande->Status = request('status');
+           
             
               $commande->Quantity = request('Quantity');
               $commande->save();

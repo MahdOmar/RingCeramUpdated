@@ -101,7 +101,13 @@
                         <p><strong>Categories:</strong> {{ $product->Categorie }} </p>
                         <hr>
                         <div class="d-flex justify-content-between">
-                          <p><strong>Disponibilité:</strong> <strong class="text-success">Disponible</strong>  </p>
+                          <p><strong>Disponibilité:</strong> @if ($product->Quantity > 10)
+                           <strong class="text-success">Disponible</strong>  </p>
+                          @else
+                               <strong class="text-danger">Indisponible</strong>  </p>
+                          @endif
+                            
+                          
 
                           <p><strong>Price:</strong> <strong class="text-info">{{ $product->Price_V }} Da/Meter</strong>  </p>
 

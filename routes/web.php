@@ -30,6 +30,8 @@ Route::get('/dashboard/products/update/{id}',[ProductController::class, 'showDat
 Route::get('/dashboard/products/{id}',[ProductController::class, 'showDetails']);
 Route::get('/products/filter',[ProductController::class, 'Category']);
 Route::post('/dashboard/products',[ProductController::class, 'store']);
+Route::get('/dashboard/stock/sort',[ProductController::class, 'filter']);
+
 Route::delete('/dashboard/product/delete',[ProductController::class, 'destroy']);
 
 
@@ -51,6 +53,7 @@ Route::post('/dashboard/sales', [AchatController::class, 'index']);
 
 Route::get('/get/type', [OrderDetailsController::class, 'Type'])->name("type");
 Route::get('/dashboard/sales/create',[AchatController::class, 'create']);
+Route::get('/dashboard/sales/filter',[AchatController::class, 'filter']);
 Route::post('/dashboard/order/save',[AchatController::class, 'store']);
 Route::post('/dashboard/order/update',[AchatController::class, 'update']);
 Route::get('/dashboard/sales/show',[AchatController::class, 'showData']  );
@@ -67,6 +70,7 @@ Route::get('/dashboard/order/order_details/get', [OrderDetailsController::class,
 Route::get('/dashboard/order/order_details/getProduct', [OrderDetailsController::class, 'getProduct']);
 Route::post('/dashboard/order/order_details/update', [OrderDetailsController::class, 'updateOrderDetails']);
 Route::delete('/dashboard/order/order_details/delete', [OrderDetailsController::class, 'deleteOrderDetails']);
+Route::get('/dashboard/order_item/filter', [OrderDetailsController::class, 'getCategory']);
 
 
 

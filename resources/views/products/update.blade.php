@@ -24,6 +24,8 @@
                                 <option value="Faience"  {{ $product->Categorie == "Faience" ? 'selected' : '' }}>Faience</option>
                                 <option value="Dalle de sol"  {{ $product->Categorie == "Dalle de sol" ? 'selected' : '' }}>Dalle de sol</option>
                                 <option value="Motif"  {{ $product->Categorie == "Motif" ? 'selected' : '' }} >Motif</option>
+                                <option value="Motif"  {{ $product->Categorie == "Accessoires" ? 'selected' : '' }} >Accessoires</option>
+                                
                                
                           </select>
 
@@ -34,6 +36,10 @@
 
          
         </div>
+
+        @if ($product->Categorie != "Motif" && $product->Categorie != "Accessoires")
+            
+        
 
         <div class="form-group row">
                 <div class="col-md-6">
@@ -61,6 +67,7 @@
 
          
         </div>
+        
 
         <div class="form-group">
                 <label for="aioConceptName">Type:</label>
@@ -71,7 +78,7 @@
               </select>
         </div>
 
-        @if ( $product->Type == "X")
+        @if ( $product->Type == "X" )
 
         <div class="form-group row Quantity" style="display: none">
                 <div class="col-md-6">
@@ -121,6 +128,7 @@
 
         @endif
 
+
        
               <div class="form-group "> 
                 <div >
@@ -128,6 +136,16 @@
                       <input type="number"   class="form-control" name="meter"  step="0.01" value="{{ $product->meter_C }}" required><br>
                 </div>
               </div>
+              @else
+              <div class="form-group Qn" >
+                <div >
+                      <label for="Quantity">Quantity:</label>
+                      <input type="number" class="form-control" name="Quantity" step="0.01" value="{{ $product->Quantity }}" required>
+                  
+                </div>
+        </div>
+    
+              @endif    
 
 
         <div class="form-group row">

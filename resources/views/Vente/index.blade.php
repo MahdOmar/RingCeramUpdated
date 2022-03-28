@@ -3,42 +3,52 @@
 
 @section('content')
 
-<div  class="shadow p-3 mb-5 bg-white rounded"  style=" margin-left:10px;margin-right:10px">
-<div class="row">
-  <div class="col-md-4 pl-4" >
-    <h1 class="">Orders</h1>
 
-  </div>
+<div class="m-3">
+
+  <h4><a class="text-info" href="/dashboard">Dashborad</a> / Orders </h4>
+
+</div>
+<div  class=" shadow p-3 mb-5 bg-white rounded"  style=" margin-left:10px;margin-right:10px">
+
+<div class="row">
 
   <div class="col-md-4">
-    <input type="text" name="search" class="form-control" id="searchP" placeholder="search" onkeyup="searchProduct(event)">
-
-
+    <input type="text" name="search" class="form-control" id="searchP" placeholder="search" >
   </div>
+  <div class="col-md-4  d-flex " style="width:350px">
+    <label class="m-2  " for="date">Date</label> 
+                      <select name="date"  id="date" class="form-control form-select m-0 "      >
+                              <option value="All">All</option>
+                              <option value="tod" selected>Today</option>
+                              <option value="yes">Yesterday</option>
+                              <option value="lw">Last Week</option>
+                              <option value="lm">last Month</option>
+                             
+                      </select>
 
-  <div class="col-md-4" style="padding-left:210px">
-    <a href="" class="btn btn-dark btn-sm m-2 p-2 text-white" role="button" data-toggle="modal" data-target="#myModal" ><i class="fas fa-plus-square m-1"></i>Add Order</a>
+</div>
+
+
+ 
+
+<div class="col-md-4 d-flex justify-content-end">
+ 
+ 
+
+  <div >
+    <a href="" class="btn btn-dark btn-sm mb-2 p-2 text-white" role="button" data-toggle="modal" data-target="#myModal" ><i class="fas fa-plus-square m-1"></i>Add Order</a>
 
   </div>
       
-     </div>  
+</div>  
+
+</div>
     
-  <!--   <div class="d-flex justify-content-between">
-       <form action="/sales" method="POST" class="d-flex">
-        @csrf
-       <label for=""> Date:</label>
-       <select name="date" id="date">
-         <option value="all">All</option>
-         <option value="lastW">Last week</option>
-         <option value="lastM">Last Month</option>
-       </select>
-       <input type="submit" value="Apply">
-      </form>
-     
-    </div> -->
+ 
   
-       <table class="table table-bordered table-hover text-center">
-        <thead>
+       <table class="table table-striped table-hover text-center">
+        <thead class="bg-dark text-white">
           <tr>
             
             <th>Id</th>
@@ -57,9 +67,8 @@
             <td>{{ $order->ClientPhone }}</td>
             <td>{{ $order->ClientAdress }}</td>
             
-            <td>{{ $order->created_at->format('d/m/Y') }} </td>
-            <td> <a href="" class="btn btn-secondary text-white" data-toggle="modal" data-target="#myModal2"  role="button" onclick="getOrder({{$order->id}})"><i class="fas fa-edit"></i></a>
-           <a href="/dashboard/sales/view/{{ $order->id }}" class="btn btn-info text-white" role="button" ><i class="fas fa-print"></i></a>
+            <td>{{ $order->created_at->format('d-m-Y') }} </td>
+            <td> <a href="" class="btn btn-primary text-white" data-toggle="modal" data-target="#myModal2"  role="button" onclick="getOrder({{$order->id}})"><i class="fas fa-edit"></i></a>
            <a href="/dashboard/order/{{ $order->id }}/order_details" class="btn btn-success text-white" role="button" ><i class="fas fa-plus-square"></i></a>
            
                
@@ -73,6 +82,11 @@
       
         </tbody>
        </table>
+
+       <div class="pagination d-flex justify-content-center mt-4 ">
+        {{ $orders->links('pagination::bootstrap-4')}}
+    
+      </div>
       
        
    
@@ -153,7 +167,7 @@
       </div>
       <div class="modal-body">
     
-         <p class="text-success success text-center"></p>
+         <p class="text-success successe text-center"></p>
 
          <input type="hidden" id="id" name="id">
          <div class="form-group">
@@ -238,10 +252,11 @@ $(function(){
              dataType: 'json',
              success: function(result)
              {
+
             
              $('tbody').html('')
           
-           //  $('.success').text(result.success)
+             $('.success').text('Order Added')
        
 
             
@@ -256,8 +271,7 @@ $(function(){
             <td>'+item.ClientPhone+'</td>\
             <td>'+item.ClientAdress+'</td>\
             <td>'+dateString+' </td>\
-            <td> <a href="" class="btn btn-secondary text-white" data-toggle="modal" data-target="#myModal2"  role="button" onclick="getOrder('+item.id+')"><i class="fas fa-edit"></i></a>\
-           <a href="/dashboard/sales/view/'+item.id+'" class="btn btn-info text-white" role="button" ><i class="fas fa-print"></i></a>\
+            <td> <a href="" class="btn btn-primary text-white" data-toggle="modal" data-target="#myModal2"  role="button" onclick="getOrder('+item.id+')"><i class="fas fa-edit"></i></a>\
            <a href="/dashboard/order/'+item.id+'/order_details" class="btn btn-success text-white" role="button" ><i class="fas fa-plus-square"></i></a>\
                 <button onclick="deleteOrder('+item.id+')" id="btn'+item.id+'" class="btn btn-danger" ><i class="fas fa-trash"></i></button>\
         \
@@ -265,8 +279,14 @@ $(function(){
 
 
              })
-            
 
+             $('#ClientName').val(''),
+             $('#ClientPhone').val(''),
+             $('#ClientAdress').val(''),
+            
+             setTimeout(function() { $('.success').text('');
+             $('#myModal').modal('toggle');}, 1000);
+            
 
             /*    */
              
@@ -370,7 +390,7 @@ $(function(){
             
              $('tbody').html('')
           
-           //  $('.success').text(result.success)
+            $('.successe').text('Order Updated')
        
 
             
@@ -385,8 +405,7 @@ $(function(){
             <td>'+item.ClientPhone+'</td>\
             <td>'+item.ClientAdress+'</td>\
             <td>'+dateString+' </td>\
-            <td> <a href="" class="btn btn-secondary text-white" data-toggle="modal" data-target="#myModal2"  role="button" onclick="getOrder('+item.id+')"><i class="fas fa-edit"></i></a>\
-           <a href="/dashboard/sales/view/'+item.id+'" class="btn btn-info text-white" role="button" ><i class="fas fa-print"></i></a>\
+            <td> <a href="" class="btn btn-primary text-white" data-toggle="modal" data-target="#myModal2"  role="button" onclick="getOrder('+item.id+')"><i class="fas fa-edit"></i></a>\
            <a href="/dashboard/order/'+item.id+'/order_details" class="btn btn-success text-white" role="button" ><i class="fas fa-plus-square"></i></a>\
                 <button onclick="deleteOrder('+item.id+')" id="btn'+item.id+'" class="btn btn-danger" ><i class="fas fa-trash"></i></button>\
        \
@@ -395,7 +414,12 @@ $(function(){
 
              })
 
-             $('.success').text("Order Updated")
+             $('#ClientNameE').val(''),
+             $('#ClientPhoneE').val(''),
+             $('#ClientAdressE').val(''),
+            
+             setTimeout(function() { $('.successe').text('');
+             $('#myModal2').modal('toggle');}, 1000);
 
 
             
@@ -466,6 +490,71 @@ $(function(){
    }
 
 
+
+   $(function(){
+       
+       $('#date').change(function(){
+
+        
+        
+        
+        $.ajaxSetup({
+     headers: {
+       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     }
+   });
+          
+         
+          var date = $(this).val();
+      
+         
+          $.ajax({
+             url : '/dashboard/sales/filter',
+             data: {'date':date},
+             type: 'get',
+           //  contentType: "application/json; charset=utf-8",
+             dataType: 'json',
+             success: function(result)
+             {
+           
+              $('tbody').html('')
+
+              $.each(result, function(key, item){
+
+                var dateString = moment(item.created_at).format('DD/MM/YYYY');
+              
+               
+                $('tbody').append('\
+              <tr>\
+            <td>'+item.id+'</td>\
+            <td>'+item.ClientName+'</td>\
+            <td>'+item.ClientPhone+'</td>\
+            <td>'+item.ClientAdress+'</td>\
+            <td>'+dateString+' </td>\
+            <td> <a href="" class="btn btn-primary text-white" data-toggle="modal" data-target="#myModal2"  role="button" onclick="getOrder('+item.id+')"><i class="fas fa-edit"></i></a>\
+           <a href="/dashboard/order/'+item.id+'/order_details" class="btn btn-success text-white" role="button" ><i class="fas fa-plus-square"></i></a>\
+                <button onclick="deleteOrder('+item.id+')" id="btn'+item.id+'" class="btn btn-danger" ><i class="fas fa-trash"></i></button>\
+       \
+              </tr>')
+
+
+             })
+               
+
+              
+                 
+                
+             },
+             error: function()
+            {
+                //handle errors
+                alert('error...');
+            }
+          });
+          
+       });
+      
+   });
 
 
 

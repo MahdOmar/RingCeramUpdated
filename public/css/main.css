@@ -144,13 +144,6 @@ footer a:hover {
     margin-top: 10px;
 }
 
-#date {
-    border: 1px solid #5e2195;
-    width: 250px;
-    height: 20px;
-    margin: 15px;
-}
-
 
 /*input[type=submit]{
     width: 100% !important;
@@ -220,7 +213,12 @@ footer li {
 }
 
 .pro {
-    animation: wipe-enter 3s;
+    animation: wipe-enter 2s;
+}
+
+.imgPreview img {
+    padding: 8px;
+    max-width: 100px;
 }
 
 @keyframes moveToRight {
@@ -254,4 +252,9 @@ footer li {
         transform: scale(1, .025);
         opacity: 1;
     }
+}
+
+.col-auto img,
+.cl img {
+    height: 50px;
 }

@@ -2,29 +2,32 @@
 
 @section('content')
 
+<div class="m-3">
+
+  <h4><a class="text-info" href="/dashboard">Dashborad</a> / <a class="text-info" href="/dashboard/sales">Order</a> /Order_Details </h4>
+
+</div>
+
 <div  class="shadow p-3 mb-5 bg-white rounded"  style=" margin-left:10px;margin-right:10px">
-    <div class="row">
-      <div class="col-md-4 pl-4" >
-        <h1 class="">Order_Details</h1>
-    
-      </div>
-    
-      <div class="col-md-4">
-        <input type="text" name="search" class="form-control" id="searchP" placeholder="search" onkeyup="searchProduct(event)">
-    
-    
-      </div>
-    
-      <div class="col-md-4" style="padding-left:230px">
-        <a href="/dashboard/sales/create" class="btn btn-dark btn-sm m-2 p-2 text-white" data-toggle="modal" data-target="#myModal" role="button" onclick="getProductType()" ><i class="fas fa-plus-square m-1"></i>Add Item</a>
-    
-      </div>
-          
-         </div>  
+    <div class="d-flex justify-content-end">
+     
     
       
-           <table class="table table-bordered table-hover text-center">
-            <thead>
+      <div>
+        <a href="/dashboard/sales/view/{{  request()->route('id') }}" class="btn btn-success  m-2 p-2 text-white" role="button" ><i class="fas fa-print m-1 "></i>Print</a>
+
+      </div>
+       
+      <div>
+            <a href="/dashboard/sales/create" class="btn btn-dark btn-sm m-2 p-2 text-white " data-toggle="modal" data-target="#myModal" role="button" onclick="getProductType()" ><i class="fas fa-plus-square m-1"></i>Add Item</a>
+
+      </div>
+          
+    </div>  
+    
+      
+           <table class="table  table-hover text-center">
+            <thead class="bg-dark text-white">
               <tr>
                 
                 <th>Product</th>
@@ -41,9 +44,12 @@
               @foreach($order_details as $order)
 
               @if ($order->QuantityF > 0 || $order->QuantityC > 0 )
+              @php
+              $total = $total + ($order->Price * $order->Quantity * $order->product->meter_C)
+          @endphp
               <tr>
                 <td>{{$order->product->Designation}}</td>
-                <td>{{$order->Quantity}} carton ({{$order->QuantityF}}F, {{$order->QuantityC}}C)</td>
+                <td>{{$order->Quantity}}  ({{$order->QuantityF}}F, {{$order->QuantityC}}C)</td>
                 <td>{{  $order->Price}}.00 DA</td>
                 <td>{{ $order->Price * $order->Quantity * $order->product->meter_C  }}.00 DA</td>
                 <td><a href=""  data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails({{$order->product->id}})" ><i class="fas fa-edit"></i></a>
@@ -57,9 +63,29 @@
 
               <tr>
                 <td>{{$order->product->Designation}}</td>
-                <td>{{$order->Quantity}} c</td>
+                
+                @if ($order->product->Categorie == "Accessoires" || $order->product->Categorie == "Motif")
+                <td>{{$order->Quantity}} </td>
+                <td>{{  $order->Price }}.00 DA</td>
+                <td>{{ $order->Price * $order->Quantity }}.00 DA</td>
+                  
+                @php
+                    $total = $total + ($order->Price * $order->Quantity )
+                @endphp
+
+
+                @else
+                <td>{{$order->Quantity}} </td>
                 <td>{{  $order->Price }}.00 DA</td>
                 <td>{{ $order->Price * $order->Quantity * $order->product->meter_C }}.00 DA</td>
+                  
+                @php
+                    $total = $total + ($order->Price * $order->Quantity * $order->product->meter_C)
+                @endphp
+
+
+                    
+                @endif
                 <td><a href=""  data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails({{$order->product->id}})" ><i class="fas fa-edit"></i></a>
     
                       <button onclick="deleteOrderDetails({{$order->id}})" id="btn{{$order->id}}" class='btn btn-danger'><i class="fas fa-trash"></i></button>
@@ -73,11 +99,7 @@
 
 
             
-               
-                @php
-                    $total = $total + ($order->Price * $order->Quantity * $order->product->meter_C)
-                @endphp
-
+             
 
                 @endforeach
                 <tr>
@@ -113,6 +135,24 @@
                 @csrf
                 <input type="number" name="" id="id" value="{{ request()->route('id') }}" style="display: none">
                 <input type="number" name="" id="idD" value="" style="display: none">
+
+                <div class="form-group">
+                  <label for="Cate">Category:</label>
+                 <select name="Cate" id="Cate" class="form-control">
+                
+                 <option value="Faience">Faience</option>
+                 <option value="Dalle de sol">Dalle de Sol</option>
+                 <option value="Accessoires">Accessoires</option>
+                 <option value="Motif">Motifs</option>
+                 
+                     
+                 
+                
+              </select>    
+                 
+          </div>
+
+
                 <div class="form-group">
                         <label for="Product">Product:</label>
                        <select name="Product" id="Product" class="form-control">
@@ -193,12 +233,12 @@
                <p class="text-success successe text-center"></p>
                <p class="text-danger errore text-center"></p>
               
-                <input type="number" name="" id="idE" value="{{ request()->route('id') }}" style="display: none">
+                <input type="number"  name="" id="idE" value="{{ request()->route('id') }}" style="display: none">
                
                 <div class="form-group">
                         <label for="Product">Product:</label>
-                       <select name="Product" id="ProductE" class="form-control">
-                       @foreach ($products as $product)
+                       <select name="Product" id="ProductE" class="form-control" disabled>
+                       @foreach ($productes as $product)
                        <option value="{{ $product->id }}"    >{{ $product->Designation }}</option>
                            
                        @endforeach
@@ -327,16 +367,18 @@
                
 
              $.each(result.Products, function(key, item){
-               total = total + (item.Quantity * item.Price * item.product.meter_C)
+              
 
-               if(item.Categorie == "Accessoires" || item.Categorie == "Motif" )
+               if(item.product.Categorie == "Accessoires" || item.product.Categorie == "Motif" )
                {
+                total = total + (item.Quantity * item.Price)
+                
                 $('tbody').append('\
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
-                    <td>'+item.Quantity+'Carton('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
+                    <td>'+item.Quantity+'</td>\
                     <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C +'.00 DA</td>\
+                    <td>'+item.Price * item.Quantity +'.00 DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -347,6 +389,7 @@
                }
                 else
                 {
+                  total = total + (item.Quantity * item.Price * item.product.meter_C)
 
 
                if(item.QuantityF > 0 || item.QuantityC > 0 )
@@ -354,7 +397,7 @@
                 $('tbody').append('\
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
-                    <td>'+item.Quantity+'Carton('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
+                    <td>'+item.Quantity+'('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
                     <td> '+item.Price+'.00 DA</td>\
                     <td>'+item.Price * item.Quantity * item.product.meter_C +'.00 DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
@@ -387,6 +430,11 @@
                   <td colspan="3" class="text-right">Total</td>\
                   <td>'+total+'.00 DA</td>\
                 </tr>');
+
+                setTimeout(function() { $('.success').text('');
+             $('#myModal').modal('toggle');}, 1000);
+
+            
 
 
 
@@ -453,7 +501,7 @@ $.ajaxSetup({
 
             $('#idD').val(item.id)
            
-             $('#ProductE option[value='+item.product.id+']').attr('selected','selected'),
+             $('#ProductE').val(item.product.id),
              $('#QuantityFE').val(item.QuantityF),
              $('#QuantityCE').val(item.QuantityC),
              $('#QuantitysE').val(item.Quantity),
@@ -531,15 +579,50 @@ $(function(){
                
 
              $.each(result.Products, function(key, item){
-               total = total + (item.Quantity * item.Price * item.product.meter_C )
+               
+              
+              if(item.product.Categorie == "Accessoires" || item.product.Categorie == "Motif" )
+               {
+                total = total + (item.Quantity * item.Price)
+                
+                $('tbody').append('\
+                 <tr>\
+                    <td>'+item.product.Designation+'</td>\
+                    <td>'+item.Quantity+'</td>\
+                    <td> '+item.Price+'.00 DA</td>\
+                    <td>'+item.Price * item.Quantity +'.00 DA</td>\
+                    <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
+                          <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
+                 </td>\
+                </tr>')
+
+
+
+               }
+                else
+                {
+                  total = total + (item.Quantity * item.Price * item.product.meter_C)
+
 
                if(item.QuantityF > 0 || item.QuantityC > 0 )
                {
-
                 $('tbody').append('\
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
-                    <td>'+item.Quantity+'Carton('+item.QuantityF+'F, '+item.QuantityC+'C)</td>\
+                    <td>'+item.Quantity+'('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
+                    <td> '+item.Price+'.00 DA</td>\
+                    <td>'+item.Price * item.Quantity * item.product.meter_C +'.00 DA</td>\
+                    <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
+                          <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
+                 </td>\
+                </tr>')
+
+               }
+               else{
+                $('tbody').append('\
+                 <tr>\
+                    <td>'+item.product.Designation+'</td>\
+                    <td>'+item.Quantity+'  </td>\
                     <td> '+item.Price+'.00 DA</td>\
                     <td>'+item.Price * item.Quantity * item.product.meter_C+'.00 DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
@@ -549,22 +632,7 @@ $(function(){
 
 
                }
-
-               else {
-                 
-
-                $('tbody').append('\
-                 <tr>\
-                    <td>'+item.product.Designation+'</td>\
-                    <td>'+item.Quantity+' C</td>\
-                    <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C+'.00 DA</td>\
-                    <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
-                          <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
-                  </form></td>\
-                </tr>')
-
-               }
+                }
 
 
 
@@ -579,6 +647,11 @@ $(function(){
                 </tr>')
 
                }
+
+               setTimeout(function() { $('.successe').text('');
+             $('#myModal2').modal('toggle');}, 1000);
+
+             
 
              },
              error: function()
@@ -677,11 +750,7 @@ $.ajaxSetup({
          dataType: 'json',
          success: function(result)
          {
-          console.log(result)
           
-           
-         
-            
              if(result.Type == 'FC'){
              
                 $('.Quan').hide();
@@ -715,6 +784,47 @@ $.ajaxSetup({
 
 
   }
+
+  $(function(){
+       
+       $('#Cate').change(function(){
+
+        
+        
+        
+        $.ajaxSetup({
+     headers: {
+       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+     }
+   });
+          
+         
+          var cate = $(this).val();
+      
+         
+          $.ajax({
+             url : '/dashboard/order_item/filter',
+             data: {'cate':cate},
+             type: 'get',
+           //  contentType: "application/json; charset=utf-8",
+             dataType: 'json',
+             success: function(result)
+             {
+           
+              $('#Product').html(result.html);
+                
+             },
+             error: function()
+            {
+                //handle errors
+                alert('error...');
+            }
+          });
+          
+       });
+      
+   });
+
 
 
 

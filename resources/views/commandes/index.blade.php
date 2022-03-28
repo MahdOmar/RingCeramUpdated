@@ -3,17 +3,23 @@
 
 @section('content')
 
+
+<div class="m-3">
+
+  <h4><a class="text-info" href="/dashboard">Dashborad</a> / Commandes </h4>
+
+</div>
+
+
 <div  class="row shadow p-3 mb-5 bg-white rounded"  style=" margin-left:10px;margin-right:10px">
 
-  <div class="col-md-4 pl-4">
-    <h1 class="">Commandes</h1>
-  </div>
+  
 
   <div class="col-md-4">
     <input type="text" name="search" class="form-control" id="searchP" placeholder="search" onkeyup="searchCommande(event)">
   </div>
 
-  <div class="col-md-4 " style="padding-left:180px">
+  <div class="col-md-8 d-flex justify-content-end " >
     
     <a href="/dashboard/commandes/create" class="btn btn-dark btn-sm m-2 p-2 text-white" role="button" ><i class="fas fa-plus-square m-1"></i>Add Commande</a>
 
@@ -21,8 +27,8 @@
        
 
   
-       <table class="table table-bordered table-hover text-center">
-        <thead>
+       <table class="table table-striped table-hover text-center">
+        <thead class="bg-dark text-white">
           <tr>
               <th>Name</th>
               <th>Phone</th>
@@ -65,8 +71,8 @@
         <div class="d-flex justify-content-center">
         <h1 >Completed Commandes</h1>
         </div>
-           <table class="table table-bordered table-hover text-center">
-            <thead>
+           <table class="table table-striped table-hover text-center">
+            <thead class="bg-dark text-white">
               <tr>
                   <th>Name</th>
                   <th>Phone</th>
@@ -86,7 +92,7 @@
                 <td>{{ $Completed->Quantity }} </td>
                 <td>{{ $Completed->created_at->format('d/m/Y') }}</td>
                 
-                <td> <a href="/dashboard/commandes/update/{{ $Completed['id'] }}" class="btn btn-secondary text-white" role="button" ><i class="fas fa-edit"></i></a>
+                <td> <a href="/dashboard/commandes/update/{{ $Completed['id'] }}" class="btn btn-primary text-white" role="button" ><i class="fas fa-edit"></i></a>
                 
                     <button onclick="deCompleteCommande({{ $Completed['id'] }})" id="deComp{{$Completed['id']}}"  class="btn btn-danger"><i class="fas fa-trash"></i></button>
          

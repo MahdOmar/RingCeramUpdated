@@ -3,6 +3,12 @@
 
 @section('content')
 
+<div class="m-3">
+
+        <h4><a class="text-info" href="/dashboard">Dashborad</a> / <a class="text-info" href="/dashboard/commandes">Commandes</a> / Add </h4>
+      
+      </div>
+
 
 <div  class=" shadow p-3 mb-5 bg-white rounded"  style=" margin-left:250px;margin-right:250px">
         <div class="text-center">
@@ -13,7 +19,7 @@
          @csrf
         <div class="form-group">
                 <label for="nm">Name:</label>
-                <input type="text" class="form-control"  name="name" pattern="[a-zA-Z]{2,}" required>
+                <input type="text" class="form-control "  name="name"  required>
         </div>
 
         <div class="form-group">

@@ -25,33 +25,12 @@ class AchatController extends Controller
 
     public function index(){
 
-      $orders = order::all();
-
-
-
-
-
- 
-
-      /*  $sales = Achat::join('products','achats.product_id','=','products.id')
-        ->select('achats.id','products.Designation','products.Type','achats.Quantity','achats.Amount','achats.created_at')
-        ->get();*/
-
-      /*  if(is_null(request('date'))){
-          $sales = Achat::with('product')->get();
-          $total = $sales->sum('Amount');
-          
+      $today = Carbon::today();
               
-                return view('Vente.index',['sales' => $sales,'total' => $total]);
+      $orders = order::whereDate('created_at',"=",$today)->paginate(8);
 
-        }
-        else{
-          if(request('date') == "lastW"){
-            $sales = Achat::with('product')->whereBetween('created_at',[Carbon::now()->subWeeks(1),Carbon::now()])->get();
-            $total = $sales->sum('Amount');
-            return view('Vente.index',['sales' => $sales,'total' => $total]);
-          }
-        }*/
+      
+     
 
         return view('Vente.index',['orders' => $orders]);
         
@@ -76,70 +55,13 @@ class AchatController extends Controller
             $order->ClientPhone = request('ClientPhone');
             $order->ClientAdress = request('ClientAdress');
             $order->save();
-            $orders = order::all();
+
+            $today = Carbon::today();
+            $orders = order::whereDate('created_at',"=",$today)->get();
             
 
             return $orders;
-
-
-
-
-
-
-
-
-
-
-
-
-
-      /*
-              $sale = new Achat();
-              $names = Product::distinct()->get(['Designation']);
-      
-              
-
-              $product = Product::where('Designation',request('name'))->where('Type',request('type'))->get();
-              
-             
-              if($product->count() == 0){
-                  $error='Product does not exist in stock';
-                  return view('Vente.create',['error' => $error,'names' => $names]);
-              }
-              
-              else{
-              
-                  if($product[0]->Quantity < request('Quantity'))
-                  {
-                    return view('Vente.create',['error' => 'Sale Quantity is sup than Stock Quantity','names' => $names]);
-                  }
-
-                  elseif(request('Quantity') == 0)
-                  {
-                    return view('Vente.create',['error' => 'Sale Quantity is 0','names' => $names]);
-                  
-                  }
-
-                  else{
-                    $sale->product_id = $product[0]->id;  
-                    $sale->Quantity = request('Quantity');
-                    $sale->Amount = request('price_a');
-                    $product[0]->Quantity = $product[0]->Quantity - $sale->Quantity;
-                    $product[0]->save();
-
-                    $sale->save();
-           
-      
-                    return redirect('/dashboard/sales');
-                  }
-
-
-              }
-*/
-
-         
-             
-              
+       
           }
  
           public function showData(){
@@ -159,7 +81,8 @@ class AchatController extends Controller
             $order->ClientPhone = request('ClientPhone');
             $order->ClientAdress = request('ClientAdress');
             $order->save();
-            $orders = order::all();
+            $today = Carbon::today();
+            $orders = order::whereDate('created_at',"=",$today)->get();
             
 
             return $orders;
@@ -183,6 +106,60 @@ class AchatController extends Controller
               
               ]);
           }
+
+          public function filter()
+          {
+
+            if(request('date') == "tod")
+            {
+              $today = Carbon::today();
+              
+              $sales = order::whereDate('created_at',"=",$today)->get();
+    
+              return $sales;
+            }
+    
+            else if(request('date') == "yes")
+            {
+              $yesterday = Carbon::yesterday();
+              
+              $sales = order::whereDate('created_at',"=",$yesterday)->get();
+    
+              return $sales;
+            }
+            else if(request('date') == "lw")
+            {
+    
+              $date = Carbon::now()->subDays(7);
+              $sales = order::whereBetween('created_at',  [$date,Carbon::now()])->get();
+    
+              return $sales;
+    
+    
+            }
+    
+            else if(request('date') == "lm")
+            {
+              $date = Carbon::now()->subDays(30);
+              $sales = order::whereBetween('created_at',  [$date,Carbon::now()])->get();
+    
+              return $sales;
+    
+    
+            }
+            else{
+    
+              $sales = order::orderBy('created_at', 'DESC')->get();
+              return $sales;
+    
+    
+            }
+    
+    
+    
+    
+          }
+        
 
       
 

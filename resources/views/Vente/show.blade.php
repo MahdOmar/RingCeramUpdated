@@ -47,7 +47,7 @@
 
 
 
-<div  class="shadow p-3 mb-5 bg-white rounded font-weight-bolder  print-page"  style="font-size:20px; margin-left:10px;margin-right:10px">
+<div  class=" p-3 mb-5   font-weight-bolder  print-page"  style="font-size:20px; margin-left:10px;margin-right:10px">
 <div class="container">
     <div class="brand-section">
         <div class="">
@@ -74,7 +74,7 @@
     </div>
     
 
-    <div class="body-section mt-4">
+    <div class="body-section mt-4 ">
         <h3 class="heading">Ordered Items</h3>
         <br>
         <table class="table table-bordered table-hover text-center">
@@ -91,32 +91,19 @@
                   $total = 0;
               @endphp
               @foreach($order_details as $order)
-              @if ($order->QuantityF > 0 || $order->QuantityC > 0 )
+              
               
                 <tr>
                     <td>{{$order->product->Designation}}</td>
-                    <td>{{$order->Quantity}} carton ({{$order->QuantityF}}F, {{$order->QuantityC}}C)</td>
+                    <td>{{$order->Quantity}}  @if ($order->QuantityF > 0 || $order->QuantityC > 0 ) ({{$order->QuantityF}}F, {{$order->QuantityC}}C) @endif</td>
                     <td>{{  $order->Price, 2 }}.00 Da</td>
                     <td>{{ $order->Price * $order->Quantity,2 }}.00 Da</td>
                    
 
 
                 </tr>
-                @else 
-
-                <tr>
-                    <td>{{$order->product->Designation}}</td>
-                    <td>{{$order->Quantity}} carton</td>
-                    <td>{{  $order->Price, 2 }}.00 Da</td>
-                    <td>{{ $order->Price * $order->Quantity,2 }}.00 Da</td>
-                   
-
-
-                </tr>
-
-
-
-                @endif
+               
+                
                 @php
                     $total = $total + ($order->Price * $order->Quantity)
                 @endphp

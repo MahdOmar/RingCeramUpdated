@@ -14,8 +14,8 @@ class ProductController extends Controller
 
     public function index(){
      
-       $products = Product::orderBy('Designation', 'ASC')->get();;
-           
+       $products = Product::orderBy('Designation', 'ASC')->paginate(16);;
+
              return view('products.index',['products' => $products]);
          }
      
@@ -67,7 +67,7 @@ class ProductController extends Controller
         
                 $product->Designation = request('name');
                 $product->Categorie = request('Categorie');
-                if(request('Categorie') == "Accessoires")
+                if(request('Categorie') == "Accessoires" || request('Categorie') == "Motif" )
                 {
                   $product->Size = '';
                   $product->Site = '';
@@ -139,26 +139,46 @@ class ProductController extends Controller
              
              $product->Designation = request('name');
              $product->Categorie = request('Categorie');
-             $product->Size = request('size');
-             $product->Site = request('site');
-             $product->Type = request('type');
+             if(request('Categorie') == "Accessoires" || request('Categorie') == "Motif" )
+             {
+               $product->Size = '';
+               $product->Site = '';
+               $product->Type = '';
+               $product->Quantity = request('Quantity');
 
-             if(request('type') == "FC"){
-                $product->QuantityF = request('QuantityF');
-                $product->QuantityC = request('QuantityC');
-                $product->Quantity = request('QuantityF') + request('QuantityC') ;
 
-             }
-             else{
-
-                $product->QuantityF = 0;
-                $product->QuantityC = 0;
-                $product->Quantity = request('Quantity');
 
              }
 
+             else
+             {
+               $product->Size = request('size');
+               $product->Site = request('site');
+               $product->Type = request('type');
+  
+               if(request('type') == "FC"){
+                  $product->QuantityF = request('QuantityF');
+                  $product->QuantityC = request('QuantityC');
+                  $product->Quantity = request('QuantityF') + request('QuantityC') ;
+  
+               }
+               else{
+  
+                  $product->QuantityF = 0;
+                  $product->QuantityC = 0;
+                  $product->Quantity = request('Quantity');
+  
+               }
+  
+  
+               $product->meter_C = request('meter');
 
-             $product->meter_C = request('meter');
+
+
+             }
+
+
+          
          
              $product->Price_A = request('price_a');
              $product->Price_V = request('price_v');
@@ -211,5 +231,127 @@ class ProductController extends Controller
 
 
           }    
+
+          public function filter()
+          {
+           
+            
+
+           
+             if(request('filter') == "Acc")
+             {
+
+
+               $products = Product::where('Categorie', '=', 'Accessoires')                      
+                                    ->get();
+
+               return $products;
+             }
+
+             else if( request('filter') == "Mof" )
+             {
+
+
+               $products = Product::where('Categorie', '=', 'Motif')                         
+                                    ->get();
+
+               return $products;
+             }
+
+
+             else if( request('filter') == "Dalle" )
+             {
+
+
+               $products = Product::where('Categorie', '=', 'Dalle de sol')                         
+                                    ->get();
+
+               return $products;
+             }
+
+             else if( request('filter') == "Fai" )
+             {
+
+
+               $products = Product::where('Categorie', '=', 'Faience')                         
+                                    ->get();
+
+               return $products;
+             }
+
+             else if( request('filter') == "Price" )
+             {
+
+
+               $products = Product::orderBy('Price_V', 'DESC')                         
+                                    ->get();
+
+               return $products;
+             }
+
+             else if( request('filter') == "Quan" )
+             {
+
+
+               $products = Product::orderBy('Quantity', 'DESC')                         
+                                    ->get();
+
+               return $products;
+             }
+             else if( request('filter') == "Cuisine" )
+             {
+
+
+               $products = Product::where('Site', '=', 'Cuisine')    
+                                    ->orWhere('Site', '=', 'CuisineDouche')                        
+                                    ->get();
+
+               return $products;
+             }
+
+             else if( request('filter') == "Douche" )
+             {
+
+
+               $products = Product::where('Site', '=', 'Douche')  
+                                    ->orWhere('Site', '=', 'CuisineDouche')                       
+                                    ->get();
+
+                                  
+               return $products;
+             }
+
+             else if( request('filter') == "Couloir" )
+             {
+
+
+               $products = Product::where('Site', '=', 'Couloir')                        
+                                    ->get();
+
+                                    
+               return $products;
+             }
+
+             else if( request('filter') == "CuisineDouche" )
+             {
+
+
+               $products = Product::where('Site', '=', 'CuisineDouche')                        
+                                    ->get();
+
+               return $products;
+             }
+
+
+             else
+             {
+               $products = Product::orderBy('Designation', 'ASC')->get();
+               return $products;
+             }
+
+
+
+            
+          }
      
 }

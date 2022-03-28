@@ -14,10 +14,12 @@ class OrderDetailsController extends Controller
     public function order_details($id){
             
 
-        $products = Product::all();
+        $products = Product::where('Categorie','Faience')->get();
+        $productse = Product::all();
         $order_details = order_details::with('product')->where('Order_id',$id)->get();
+        
 
-        return view('Vente.order_details',compact('products'),compact('order_details'));
+        return view('Vente.order_details',['products' => $products,'order_details' => $order_details,'productes' => $productse]);
     }
 
 
@@ -195,7 +197,11 @@ class OrderDetailsController extends Controller
   {
 
     $exist= 0;
+    $existf= 0;
+    $existc= 0;
     $quantity = 1;
+    $quantityf = 1;
+    $quantityc = 1;
 
     $product = Product::findorfail(request('Product'));
     $order_save = order_details::find(request('id'));
@@ -205,6 +211,8 @@ class OrderDetailsController extends Controller
       $product->QuantityF = $product->QuantityF + ($order_save->QuantityF * $product->meter_C) ;
       $product->QuantityC = $product->QuantityC + ($order_save->QuantityC* $product->meter_C);
       $product->Quantity = $product->Quantity + ($order_save->Quantity * $product->meter_C);
+
+      
   
 
     }
@@ -218,6 +226,7 @@ class OrderDetailsController extends Controller
 
       }
       else{
+       
           $product->Quantity = $product->Quantity + ($order_save->Quantity * $product->meter_C);
 
 
@@ -246,13 +255,16 @@ class OrderDetailsController extends Controller
 
       $exist = $product->Quantity;
       $quantity = request('Quantity') * $product->meter_C;
+
+      error_log('Quan '.$quantity.'--Exist '.$exist);
     
 
     }
+    
+
   
     if( $quantity <= $exist || ($quantityf <= $existf && $quantityc <= $existc) )
     {
-      
     
    
     $order_save->Order_id = request('idOrder');
@@ -277,7 +289,6 @@ class OrderDetailsController extends Controller
    }
    else{
      
-    $product->Quantity = $product->Quantity + ($order_save->Quantity  * $product->meter_C);
     $order_save->Quantity = request('Quantity');
     
     $product->Quantity = $product->Quantity - ($order_save->Quantity * $product->meter_C);
@@ -301,7 +312,9 @@ class OrderDetailsController extends Controller
 
     }
     else{
+      error_log('-----------------------error');
       $error = "No Quantity";
+     
 
       return response()->json([
         "error"=>$error
@@ -360,6 +373,33 @@ class OrderDetailsController extends Controller
      return response()->json([
       "success"=>'Item removed',
       "total" => $total
+    
+    ]);
+
+
+
+
+
+  }
+
+
+  public function getCategory()
+  {
+    
+    
+
+    $items =  Product::where('Categorie',request('cate'))
+                       ->get();
+   
+    $html ='';
+    
+    foreach($items as $item) {
+      $html.='<option value="'.$item->id.'">'.$item->Designation.'</option>';
+    
+    }
+    
+    return response()->json([
+      "html" => $html
     
     ]);
 
