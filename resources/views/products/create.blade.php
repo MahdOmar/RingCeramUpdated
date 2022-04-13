@@ -8,10 +8,10 @@
 <div  class=" shadow p-3 mb-5 bg-white rounded"  style=" margin-left:250px;margin-right:250px">
         <div class="text-center">
                 <h2>Add Product</h2>
-                <p class="text-danger">{{ $error }}</p>
-                <p class="text-success">{{ $success }}</p>
+                <p class="text-danger error" id="err">{{ $error }}</p>
+                <p class="text-success success">{{ $success }}</p>
         </div>
-<form action="/dashboard/products" method="POST" enctype="multipart/form-data" novalidate>
+<form action="/dashboard/products" name="form" onsubmit="return validate()" method="POST" enctype="multipart/form-data" novalidate>
          @csrf
 
         <div class="form-group row">
@@ -160,7 +160,7 @@
         $(function(){
 
                 $('#Categorie').change(function(){
-                        if($('#Categorie').find(":selected").val() == "Accessoires")
+                        if($('#Categorie').find(":selected").val() == "Accessoires" || $('#Categorie').find(":selected").val() == "Motif" )
                         {
 
                                 console.log($('#Categorie').find(":selected").val());
@@ -209,6 +209,100 @@
             multiImgPreview(this, 'div.imgPreview');
         });
         });
+
+        setTimeout(function() { $('.success').text('');
+        $('.error').text('');}, 2000);
+
+        function validate()
+        {
+             let x = document.forms["form"]["name"].value;
+             let y = document.forms["form"]["Quantity"].value;
+             let z = document.forms["form"]["meter"].value;
+             let t = document.forms["form"]["type"].value;
+             let qc = document.forms["form"]["QuantityC"].value;
+             let qf = document.forms["form"]["QuantityF"].value;
+        
+             let pa = document.forms["form"]["price_a"].value;
+             let pv = document.forms["form"]["price_v"].value;
+
+            if( x == '')
+            {
+                $('.error').text('Designation can not be empty');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false
+            }
+
+            if( y == '' && t == 'X')
+            {
+                $('.error').text('Quantity can not be empty');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false
+            }
+
+            if( t == 'FC')
+            {
+                   
+
+                    if( qf== '')
+                    {
+                        $('.error').text('QuantityF can not be empty');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        return false
+
+                    }
+
+                    if( qc == '')
+                    {
+                        $('.error').text('QuantityC can not be empty');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        return false
+
+                    }
+
+
+            }
+
+
+
+
+            if( z == '')
+            {
+                $('.error').text('Meter_C can not be empty');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false
+            }
+
+            if( pa == '')
+            {
+                $('.error').text('Price_Achat can not be empty');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false
+            }
+
+            if( pa < 0)
+            {
+                $('.error').text('Price_Achat can not be negative');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false
+            }
+
+            if( pv == '')
+            {
+                $('.error').text('Price_Vente can not be empty');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false
+            }
+            if( pv < 0)
+            {
+                $('.error').text('Price_Vente can not be negative');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false
+            }
+
+
+
+
+        }
 
 
 

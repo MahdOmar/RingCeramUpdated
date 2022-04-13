@@ -13,9 +13,9 @@ class CommandeController extends Controller
 
     public function index(){
      
-        $Commandes = Commande::where('Status','Not_Completed')->get();
+        $Commandes = Commande::where('Status','Not_Completed')->orderBy('created_at','DESC')->paginate(10);
         
-        $Completeds = Commande::where('Status','Completed')->get();
+        $Completeds = Commande::where('Status','Completed')->orderBy('created_at','DESC')->paginate(10);
             
               return view('commandes.index',['Commandes' => $Commandes , 'Completeds' => $Completeds]);
           }

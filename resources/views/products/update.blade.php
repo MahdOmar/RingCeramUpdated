@@ -20,7 +20,7 @@
 
                 <div class="col-md-6">
                         <label for="Categorie">Categorie:</label>
-                        <select name="Categorie"    class="form-control"  required >
+                        <select name="Categorie" id="Categorie"   class="form-control"  required >
                                 <option value="Faience"  {{ $product->Categorie == "Faience" ? 'selected' : '' }}>Faience</option>
                                 <option value="Dalle de sol"  {{ $product->Categorie == "Dalle de sol" ? 'selected' : '' }}>Dalle de sol</option>
                                 <option value="Motif"  {{ $product->Categorie == "Motif" ? 'selected' : '' }} >Motif</option>
@@ -41,7 +41,7 @@
             
         
 
-        <div class="form-group row">
+        <div class="form-group row size">
                 <div class="col-md-6">
                         <label for="size">Size:</label>
                         <input type="text" class="form-control" value="{{ $product->Size }}" name="size" required>
@@ -69,7 +69,7 @@
         </div>
         
 
-        <div class="form-group">
+        <div class="form-group Type">
                 <label for="aioConceptName">Type:</label>
                 <select name="type"  id="aioConceptName"  class="form-control" onchange="quantity()"  required >
                     <option value="X"  {{ $product->Type == "X" ? 'selected' : '' }}>None</option>
@@ -130,7 +130,7 @@
 
 
        
-              <div class="form-group "> 
+              <div class="form-group meter"> 
                 <div >
                       <label for="meter">Meter/K:</label>
                       <input type="number"   class="form-control" name="meter"  step="0.01" value="{{ $product->meter_C }}" required><br>
@@ -178,3 +178,40 @@
 
         
   @endsection
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+
+          
+        $(function(){
+
+$('#Categorie').change(function(){
+        if($('#Categorie').find(":selected").val() == "Accessoires" || $('#Categorie').find(":selected").val() == "Motif" )
+        {
+
+                console.log($('#Categorie').find(":selected").val());
+                $('.Quantity').hide();
+                $('.Type').hide();
+                $('.size').hide();
+                $('.meter').hide();
+        }
+        else
+        {
+               
+                $('.Type').show();
+                $('.size').show();
+                $('.meter').show();
+
+
+
+        }
+
+})
+
+});
+
+
+
+
+
+  </script>

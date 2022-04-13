@@ -50,15 +50,25 @@ class ProductController extends Controller
 
                $image = array();
                $files = request('image');
-                   foreach ($files as $file) {
-                       $image_name = md5(rand(1000, 10000));
-                       $ext = strtolower($file->getClientOriginalExtension());
-                       $image_full_name = $image_name.'.'.$ext;
-                       $upload_path = 'img/products/';
-                       $image_url = $upload_path.$image_full_name;
-                       $file->move($upload_path, $image_full_name);
-                       $image[] = $image_url;
-                   }
+               if(!empty(request('image')))
+               {
+              
+                foreach ($files as $file) {
+                    $image_name = md5(rand(1000, 10000));
+                    $ext = strtolower($file->getClientOriginalExtension());
+                    $image_full_name = $image_name.'.'.$ext;
+                    $upload_path = 'img/products/';
+                    $image_url = $upload_path.$image_full_name;
+                    $file->move($upload_path, $image_full_name);
+                    $image[] = $image_url;
+                }
+            
+
+               }
+               else{
+                $image[] = 'img/products/productd.png';
+
+               }
                
    
    

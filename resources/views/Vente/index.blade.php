@@ -4,9 +4,10 @@
 @section('content')
 
 
-<div class="m-3">
+<div class="m-3 ">
 
   <h4><a class="text-info" href="/dashboard">Dashborad</a> / Orders </h4>
+
 
 </div>
 <div  class=" shadow p-3 mb-5 bg-white rounded"  style=" margin-left:10px;margin-right:10px">
@@ -19,8 +20,8 @@
   <div class="col-md-4  d-flex " style="width:350px">
     <label class="m-2  " for="date">Date</label> 
                       <select name="date"  id="date" class="form-control form-select m-0 "      >
-                              <option value="All">All</option>
-                              <option value="tod" selected>Today</option>
+                              <option value="All"  selected>All</option>
+                              <option value="tod">Today</option>
                               <option value="yes">Yesterday</option>
                               <option value="lw">Last Week</option>
                               <option value="lm">last Month</option>
@@ -54,7 +55,7 @@
             <th>Id</th>
             <th>Client Name</th>
             <th>Client Phone</th>
-            <th>Adress</th>
+            <th>Address</th>
             <th>Date</th>
             <th>Options</th>
           </tr>
@@ -112,6 +113,8 @@
       <div class="modal-body">
     
          <p class="text-success success text-center"></p>
+         <p class="text-danger error text-center"></p>
+
          <div class="form-group">
           <label for="nameE">Client Name:</label>
           <input type="text" class="form-control" name="name" id="ClientName" required>
@@ -231,11 +234,27 @@ $(function(){
        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
      }
    });
+
+      if( $('#ClientName').val()  == '' ||   $('#ClientPhone').val() == '' || $('#ClientAdress').val() == '' )
+      {
+       
+        $('.error').text("All fields are required");
+        
+       
+        setTimeout(function() { $('.error').text('');
+        
+
+            }, 3000);
+
+      }
+      else{
+
+      
            
 
          
           var data = {
-           
+            'date' : $('#date').val(),
             'ClientName': $('#ClientName').val(),
             'ClientPhone': $('#ClientPhone').val(),
             'ClientAdress': $('#ClientAdress').val(),
@@ -257,11 +276,13 @@ $(function(){
              $('tbody').html('')
           
              $('.success').text('Order Added')
+
+             $('#date').val('All')
        
 
             
              $.each(result, function(key, item){
-              var dateString = moment(item.created_at).format('DD/MM/YYYY');
+              var dateString = moment(item.created_at).format('DD-MM-YYYY');
               
                
               $('tbody').append('\
@@ -294,11 +315,13 @@ $(function(){
              },
              error: function()
             {
-                //handle errors
-                alert('error...');
+                
+             
             }
           });
+        }
        });
+      
       
    });
 
@@ -391,6 +414,7 @@ $(function(){
              $('tbody').html('')
           
             $('.successe').text('Order Updated')
+            $('#date').val('All')
        
 
             
@@ -521,7 +545,7 @@ $(function(){
 
               $.each(result, function(key, item){
 
-                var dateString = moment(item.created_at).format('DD/MM/YYYY');
+                var dateString = moment(item.created_at).format('DD-MM-YYYY');
               
                
                 $('tbody').append('\

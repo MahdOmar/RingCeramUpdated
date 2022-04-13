@@ -25,9 +25,9 @@ class AchatController extends Controller
 
     public function index(){
 
-      $today = Carbon::today();
+    
               
-      $orders = order::whereDate('created_at',"=",$today)->paginate(8);
+      $orders = order::orderBy('created_at','DESC')->paginate(10);
 
       
      
@@ -56,8 +56,8 @@ class AchatController extends Controller
             $order->ClientAdress = request('ClientAdress');
             $order->save();
 
-            $today = Carbon::today();
-            $orders = order::whereDate('created_at',"=",$today)->get();
+            $orders = order::orderBy('created_at',"DESC")->get();
+
             
 
             return $orders;
@@ -81,8 +81,10 @@ class AchatController extends Controller
             $order->ClientPhone = request('ClientPhone');
             $order->ClientAdress = request('ClientAdress');
             $order->save();
-            $today = Carbon::today();
-            $orders = order::whereDate('created_at',"=",$today)->get();
+
+            
+           
+            $orders = order::orderBy('created_at',"DESC")->get();
             
 
             return $orders;

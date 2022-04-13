@@ -50,7 +50,7 @@ class DashboardController extends Controller
       $orders = order::all();
       $Count_orders =  count($orders);
 
-      $today = Carbon::today();
+      $today = Carbon::now();
       $ord_tod = order::whereDate('created_at',"=",$today)->get();
       $tod =  count($ord_tod);
 
@@ -66,8 +66,12 @@ class DashboardController extends Controller
 
       
       $salesData1 = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
-                                ->where('products.Categorie','=','Accessoires')
-                                ->orWhere('products.Categorie','=','Motif') 
+                                  ->where(function($query) {
+                                    $query->where('products.Categorie','=','Motif') 
+                                    ->orWhere('products.Categorie','=','Accessoires');
+
+                                   })
+                                
                                 ->whereYear('order_details.created_at', date('Y'))
                                 ->select(DB::raw('sum(order_details.Price * order_details.Quantity )as amount'))
                                 ->groupBy(DB::raw("Month(order_details.created_at) "))
@@ -75,8 +79,12 @@ class DashboardController extends Controller
                                 ->pluck('amount');
       
        $salesData2 = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
-                                   ->where('products.Categorie','!=','Accessoires')
-                                   ->orWhere('products.Categorie','!=','Motif') 
+                                ->where(function($query) {
+                                    $query->where('products.Categorie','!=','Motif') 
+                                    ->where('products.Categorie','!=','Accessoires');
+
+                                   })
+                                 
                                    ->whereYear('order_details.created_at', date('Y'))
                                    ->select(DB::raw('sum(order_details.Price * order_details.Quantity * products.meter_C )as amount'))
                                    ->groupBy(DB::raw("Month(order_details.created_at) "))
@@ -117,16 +125,103 @@ class DashboardController extends Controller
       
       // error_log(print_r($datas, TRUE) );
 
+     
+
+      $today_cer = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                   ->where(function($query) {
+                                    $query->where('products.Categorie','!=','Motif') 
+                                    ->where('products.Categorie','!=','Accessoires');
+
+                                   })
+                                   ->whereDate('order_details.created_at', '=',Carbon::now())
+                                   ->sum(DB::raw('order_details.Price *  order_details.Quantity * products.meter_C ')) ;
+
+      $today_oth = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                    ->where(function($query) {
+                                    $query->where('products.Categorie','=','Motif') 
+                                    ->orWhere('products.Categorie','=','Accessoires');
+
+                                   })
+                                   ->whereDate('order_details.created_at', '=',Carbon::now())
+                                   ->sum(DB::raw('order_details.Price *  order_details.Quantity')) ;        
+                                   
+       $today_tot = $today_cer +  $today_oth  ;  
+       
+       
+        $yes_cer = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                   ->where(function($query) {
+                                    $query->where('products.Categorie','!=','Motif') 
+                                    ->where('products.Categorie','!=','Accessoires');
+
+                                   })
+                                   ->whereDate('order_details.created_at', '=',Carbon::yesterday())
+                                   ->sum(DB::raw('order_details.Price *  order_details.Quantity * products.meter_C ')) ;
+
+      $yes_oth = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                    ->where(function($query) {
+                                    $query->where('products.Categorie','=','Motif') 
+                                    ->orWhere('products.Categorie','=','Accessoires');
+
+                                   })
+                                   ->whereDate('order_details.created_at', '=',Carbon::yesterday())
+                                   ->sum(DB::raw('order_details.Price *  order_details.Quantity')) ;        
+                                   
+       $yes_tot = $yes_cer +  $yes_oth  ; 
+      
+         $lw_cer = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                   ->where(function($query) {
+                                    $query->where('products.Categorie','!=','Motif') 
+                                    ->Where('products.Categorie','!=','Accessoires');
+
+                                   })
+                                   ->sum(DB::raw('order_details.Price *  order_details.Quantity * products.meter_C ')) ;
+
+      $lw_oth = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                    ->where(function($query) {
+                                    $query->where('products.Categorie','=','Motif') 
+                                    ->orWhere('products.Categorie','=','Accessoires');
+
+                                   })
+                                   ->sum(DB::raw('order_details.Price *  order_details.Quantity')) ;        
+                                   
+       $lw_tot = $lw_cer +  $lw_oth  ; 
       
 
+        $Sales_all = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                     ->where('products.Categorie','=','Motif') 
+                                     ->orwhere('products.Categorie','=','Accessoires')
+                                     ->sum(DB::raw('(order_details.Price * order_details.Quantity) - (products.Price_A * order_details.Quantity) '));
 
+       $Sales_all2 = order_details::join('products', 'order_details.Product_id', '=', 'products.id')
+                                     ->where('products.Categorie','!=','Motif') 
+                                     ->where('products.Categorie','!=','Accessoires')
+                                     ->sum(DB::raw('(order_details.Price * order_details.Quantity * products.meter_C )-(products.Price_A * order_details.Quantity * products.meter_C ) '));   
 
+ 
+                                     
+         $income = ($Sales_all + $Sales_all2 );  
+         
+         
 
+         $top = order_details::select(
+          'products.Designation',
+          'products.meter_C',
+          'order_details.Price',
+          'products.Price_A',
+          DB::raw('SUM((order_details.Quantity))  as total'))
+          ->leftJoin('products', 'products.id', '=', 'order_details.Product_id')
+          ->groupBy('order_details.Product_id')
+          ->orderBy('total', 'desc')
+          ->limit(5)
+          ->get();
+                                     
+                                     
+                                     
+                              
+        
+     
 
-
-
-                       
-                                
+                              
 
 
 
@@ -134,7 +229,8 @@ class DashboardController extends Controller
                                      'Count_Not_Completed' => $Count_Not_Completed, 'Count_Completed' => $Count_Completed,
                                      'Ceramic' => $Cer, 'Acc' => $Acc,
                                       'orders' => $Count_orders,'today' => $tod ,'yesterday' => $count_yes, 'LastW' => $count_lw ,
-                                      'salesData' => $datas]);
+                                      'salesData' => $datas, "salesToday" => $today_tot ,'salesYes' => $yes_tot,'salesLw' => $lw_tot,
+                                       'income' => $income ,'top' => $top]);
 
 
     }

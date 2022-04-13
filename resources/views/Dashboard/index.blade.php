@@ -261,112 +261,184 @@
       
         </div>
       
-        <div class="row m-4">
+        <div class="row  m-2">
       
           <div id="cont" class="col-md-8" style="overflow: scroll">
       
       
           </div>
 
-          <div class="card col-md-4">
-            <div class="card-header">Commandes Chart</div>
-            <div class="card-body">
-                <div class="chart-container pie-chart">
-                    <canvas id="doughnut_chart"></canvas>
-                </div>
-            </div>
-        </div>
+          <div class=" col-md-4">
 
-
-
-
-      
-        
-        <div class="row m-4 ">
-          <div class="d-flex flex-wrap">
-              <div class=" w-50 ">
-                  <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col">
-                          <h5 class="card-title text-uppercase text-muted mb-0">Today Sales</h5>
-                          <span class="h2 font-weight-bold mb-0"></span>
-                        </div>
-                        <div class="col-auto">
-                          <div class="">
-                              <img src="{{ asset('img/payment.png') }}"  width="60" alt="">
-                          </div>
+            <div class="  w-100  "  style="height: 110px">
+                <div class="card card-stats mb-4 mb-xl-0">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Today Sales</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $salesToday }} DA</span>
+                      </div>
+                      <div class="col-auto">
+                        <div class="">
+                            <img src="{{ asset('img/allsales.jpg') }}"  width="60" alt="">
                         </div>
                       </div>
-                     
                     </div>
+                   
                   </div>
                 </div>
-              
-                <div class=" w-50">
-                  <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col">
-                          <h5 class="card-title text-uppercase text-muted mb-0">Yesterday Sales</h5>
-                          <span class="h2 font-weight-bold mb-0"></span>
-                        </div>
-                        <div class="col-auto">
-                          <div>
-                              <img src="{{ asset('img/cash-payment.png') }}" width="60" alt="">
-                          </div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-              
-                <div class="w-50 ">
-                  <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col">
-                          <h5 class="card-title text-uppercase text-muted mb-0">Last week Sales</h5>
-                          <span class="h2 font-weight-bold mb-0"></span>
-                        </div>
-                        <div class="col-auto">
-                          <div class="">
-                              <img src="{{ asset('img/cash-flow.png') }}" width="60" alt="">
-      
-                          </div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-      
-                <div class="w-50 ">
-                  <div class="card card-stats mb-4 mb-xl-0">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col">
-                          <h5 class="card-title text-uppercase text-muted mb-0">Revenue</h5>
-                          <span class="h2 font-weight-bold mb-0"></span>
-                        </div>
-                        <div class="col-auto">
-                          <div class="">
-                              <img src="{{ asset('img/revenue.png') }}" width="60" alt="">
-      
-                          </div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-                
               </div>
+            
+              <div class="w-100   "  style="height: 110px"> 
+                <div class="card card-stats mb-4 mb-xl-0">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Yesterday Sales</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $salesYes }} DA</span>
+                      </div>
+                      <div class="col-auto">
+                        <div>
+                            <img src="{{ asset('img/tod.jpg') }}" width="60" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                </div>
+              </div>
+            
+              <div class="w-100  " style="height: 110px">
+                <div class="card card-stats mb-4 mb-xl-0">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Total Sales</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $salesLw }} DA</span>
+                      </div>
+                      <div class="col-auto">
+                        <div class="">
+                            <img src="{{ asset('img/tod.jpg') }}" width="60" alt="">
+    
+                        </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                </div>
+              </div>
+    
+              <div class="w-100 "  style="height: 110px">
+                <div class="card card-stats mb-4 mb-xl-0">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Total Revenue</h5>
+                        <span class="h2 font-weight-bold mb-0">{{ $income }} DA</span>
+                      </div>
+                      <div class="col-auto">
+                        <div class="">
+                            <img src="{{ asset('img/sales.png') }}" width="60" alt="">
+    
+                        </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                </div>
+              </div>
+           
+        </div>
+    </div>
+
+
+
+
+      
+        
+        <div class="row m-2 mt-4  ">
+          <div class=" card col-md-7 p-0" >
+
+            <div class="card-header border-0 bg-info text-white"> <b>Top 5 Most Sold Products</b> </div>
+
+            <table id="datatable-export" class="table  table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Sales</th>
+                        <th>Profit</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($top as $sale)
+
+             
+                    <tr>
+                      <td>{{$sale->Designation}} </td>
+                      <td>{{$sale->total}} </td>
+                      <td>@if (isset($sale->meter_C))
+
+                        {{$sale->total * $sale->Price * $sale->meter_C}} DA
+                          
+                      @else
+
+                      {{$sale->total * $sale->Price }} DA
+                          
+                      @endif </td>
+                    
+                      <td >
+                        @if (isset($sale->meter_C))
+
+                      <p class="badge badge-success">  {{$sale->total * $sale->Price * $sale->meter_C - ($sale->total * $sale->Price_A * $sale->meter_C)}} DA </p>
+                          
+                      @else
+
+                   <p class="badge badge-success">   {{$sale->total * $sale->Price - ($sale->total * $sale->Price_A ) }} DA </p>
+                          
+                      @endif 
+
+
+                      </td>
+                    
+                  
+      
+                  </tr>
+                  @endforeach
+                
+                 
+                    
+                </tbody>
+            </table>
+        
+
+            
+                
+         </div>
+
+ 
+              <div class="card col-md-4 offset-md-1 p-0">
+                <div class="card-header bg-warning text-white">Commandes Chart</div>
+                <div class="card-body" >
+                    <div class="chart-container pie-chart">
+                        <canvas id="doughnut_chart" style="max-height: 200px"></canvas>
+                    </div>
+                </div>
+               
+
+
+
+
+
+              </div>
+
       
       </div>
         
-      </div>
+
+      
+      
                
             
         
@@ -376,6 +448,8 @@
       
        
     </div>
+
+    
 
 </div>
 

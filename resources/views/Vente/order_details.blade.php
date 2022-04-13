@@ -50,8 +50,8 @@
               <tr>
                 <td>{{$order->product->Designation}}</td>
                 <td>{{$order->Quantity}}  ({{$order->QuantityF}}F, {{$order->QuantityC}}C)</td>
-                <td>{{  $order->Price}}.00 DA</td>
-                <td>{{ $order->Price * $order->Quantity * $order->product->meter_C  }}.00 DA</td>
+                <td>{{  $order->Price}} DA</td>
+                <td>{{ $order->Price * $order->Quantity * $order->product->meter_C  }} DA</td>
                 <td><a href=""  data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails({{$order->product->id}})" ><i class="fas fa-edit"></i></a>
     
                       <button onclick="deleteOrderDetails({{$order->id}})" id="btn{{$order->id}}" class='btn btn-danger'><i class="fas fa-trash"></i></button>
@@ -66,8 +66,8 @@
                 
                 @if ($order->product->Categorie == "Accessoires" || $order->product->Categorie == "Motif")
                 <td>{{$order->Quantity}} </td>
-                <td>{{  $order->Price }}.00 DA</td>
-                <td>{{ $order->Price * $order->Quantity }}.00 DA</td>
+                <td>{{  $order->Price }} DA</td>
+                <td>{{ $order->Price * $order->Quantity }} DA</td>
                   
                 @php
                     $total = $total + ($order->Price * $order->Quantity )
@@ -76,8 +76,8 @@
 
                 @else
                 <td>{{$order->Quantity}} </td>
-                <td>{{  $order->Price }}.00 DA</td>
-                <td>{{ $order->Price * $order->Quantity * $order->product->meter_C }}.00 DA</td>
+                <td>{{  $order->Price }} DA</td>
+                <td>{{ $order->Price * $order->Quantity * $order->product->meter_C }} DA</td>
                   
                 @php
                     $total = $total + ($order->Price * $order->Quantity * $order->product->meter_C)
@@ -104,7 +104,7 @@
                 @endforeach
                 <tr>
                   <td colspan="3" class="text-right">Total</td>
-                  <td>{{  $total   }}.00 DA</td>
+                  <td>{{  $total   }} DA</td>
 
 
                 </tr>
@@ -174,7 +174,7 @@
 
                <div class="form-group row Type" style="display: none">
                  <div class="col-md-6">
-                <label for="QuantityF">Quantityf:</label>
+                <label for="QuantityF">QuantityF:</label>
                 <input type="number" id="QuantityF" class="form-control" name="QuantityF" step="0.01"  required>
               </div>
 
@@ -315,9 +315,54 @@
        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
      }
    });
-           
+           if( ( $('#myModal .Quan').is(":visible") &&  $('#Quantitys').val() == '') || $('#price').val() == ''  )
+           {
+               $('.error').text("All fields are required");
+
+              setTimeout(function() { $('.error').text('');
+                }, 3000);
+           }
+
+           else if( $('#myModal .Quan').is(":visible") &&  $('#Quantitys').val() <= 0)
+           {
+             $('.error').text("Quantity can not be 0 or negative");
+
+              setTimeout(function() { $('.error').text('');
+                }, 3000);
+
+           }
+           else if( $('#myModal .Type').is(":visible") && ( $('#QuantityF').val() == '' || $('#QuantityC').val() == ''   )  )
+           {
+              $('.error').text("QuantityF and QuantityC are required");
+
+              setTimeout(function() { $('.error').text('');
+                }, 3000);
+
+           }
+
+           else if( $('#myModal .Type').is(":visible") && ( $('#QuantityF').val() <=0 || $('#QuantityC').val() <=0   )  )
+           {
+              $('.error').text("QuantityF and QuantityC can not be 0 or negative");
+
+              setTimeout(function() { $('.error').text('');
+                }, 3000);
+
+           }
+
+           else if( $('#price').val() < 0  )
+           {
+             $('.error').text("Price can not be negative");
+
+              setTimeout(function() { $('.error').text('');
+                }, 3000);
+
+           }
+
+          
 
    
+           else{
+
            
          
           var data = {
@@ -377,8 +422,8 @@
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'</td>\
-                    <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity +'.00 DA</td>\
+                    <td> '+item.Price+' DA</td>\
+                    <td>'+item.Price * item.Quantity +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -398,8 +443,8 @@
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
-                    <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C +'.00 DA</td>\
+                    <td> '+item.Price+' DA</td>\
+                    <td>'+item.Price * item.Quantity * item.product.meter_C +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -411,8 +456,8 @@
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+' </td>\
-                    <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C+'.00 DA</td>\
+                    <td> '+item.Price+' DA</td>\
+                    <td>'+item.Price * item.Quantity * item.product.meter_C+' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                   </form></td>\
@@ -428,7 +473,7 @@
              $('tbody').append('\
              <tr>\
                   <td colspan="3" class="text-right">Total</td>\
-                  <td>'+total+'.00 DA</td>\
+                  <td>'+total+' DA</td>\
                 </tr>');
 
                 setTimeout(function() { $('.success').text('');
@@ -449,6 +494,8 @@
                 alert('error...');
             }
           });
+
+        }
        });
       
    });
@@ -532,6 +579,55 @@ $(function(){
        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
      }
    });
+
+   if( ( $('#myModal2 .Quan').is(":visible") &&  $('#QuantitysE').val() == '') || $('#priceE').val() == ''  )
+           {
+               $('.errore').text("All fields are required");
+
+              setTimeout(function() { $('.errore').text('');
+                }, 3000);
+           }
+
+           else if( $('#myModal2 .Quan').is(":visible") &&  $('#QuantitysE').val() <= 0)
+           {
+             $('.errore').text("Quantity can not be 0 or negative");
+
+              setTimeout(function() { $('.errore').text('');
+                }, 3000);
+
+           }
+           else if( $('#myModal2 .Type').is(":visible") && ( $('#QuantityFE').val() == '' || $('#QuantityCE').val() == ''   )  )
+           {
+              $('.errore').text("QuantityF and QuantityC are required");
+
+              setTimeout(function() { $('.errore').text('');
+                }, 3000);
+
+           }
+
+           else if( $('#myModal2 .Type').is(":visible") && ( $('#QuantityFE').val() <=0 || $('#QuantityCE').val() <=0   )  )
+           {
+              $('.errore').text("QuantityF and QuantityC can not be 0 or negative");
+
+              setTimeout(function() { $('.errore').text('');
+                }, 3000);
+
+           }
+
+           else if( $('#priceE').val() < 0  )
+           {
+             $('.errore').text("Price can not be negative");
+
+              setTimeout(function() { $('.errore').text('');
+                }, 3000);
+
+           }
+
+
+      else
+      {
+
+      
            
           
          
@@ -589,8 +685,8 @@ $(function(){
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'</td>\
-                    <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity +'.00 DA</td>\
+                    <td> '+item.Price+' DA</td>\
+                    <td>'+item.Price * item.Quantity +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -610,8 +706,8 @@ $(function(){
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
-                    <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C +'.00 DA</td>\
+                    <td> '+item.Price+' DA</td>\
+                    <td>'+item.Price * item.Quantity * item.product.meter_C +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -623,8 +719,8 @@ $(function(){
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'  </td>\
-                    <td> '+item.Price+'.00 DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C+'.00 DA</td>\
+                    <td> '+item.Price+' DA</td>\
+                    <td>'+item.Price * item.Quantity * item.product.meter_C+' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                   </form></td>\
@@ -643,7 +739,7 @@ $(function(){
              $('tbody').append('\
              <tr>\
                   <td colspan="3" class="text-right">Total</td>\
-                  <td>'+total+'.00 DA</td>\
+                  <td>'+total+' DA</td>\
                 </tr>')
 
                }
@@ -660,6 +756,7 @@ $(function(){
                 alert('error...');
             }
           });
+        }
        });
       
    });
@@ -694,7 +791,7 @@ $(function(){
           {
           
            $("#btn"+id).closest("tr").remove();
-           $('tbody tr:last-child').children().last().text(result.total+'.00 DA');
+           $('tbody tr:last-child').children().last().text(result.total+' DA');
            
        
 
