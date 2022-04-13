@@ -65,9 +65,9 @@
                 <p class="sub-heading">Phone:  0662954631 </p>
             </div>
             <div class="col-6 " style="padding-left: 250px">
-                <p class="sub-heading">Full Name:  {{ $order->ClientName }}  </p>
-                <p class="sub-heading">Address:  {{ $order->ClientAdress }}  </p>
-                <p class="sub-heading">Phone Number:  {{ $order->ClientPhone }}  </p>
+                <p class="sub-heading">Client Name:  {{ $order->ClientName }}  </p>
+                <p class="sub-heading">Client Address:  {{ $order->ClientAdress }}  </p>
+                <p class="sub-heading">Client Phone:  {{ $order->ClientPhone }}  </p>
                
             </div>
         </div>
@@ -87,35 +87,76 @@
                 </tr>
             </thead>
             <tbody>
-                @php
-                  $total = 0;
-              @endphp
-              @foreach($order_details as $order)
-              
-              
-                <tr>
-                    <td>{{$order->product->Designation}}</td>
-                    <td>{{$order->Quantity}}  @if ($order->QuantityF > 0 || $order->QuantityC > 0 ) ({{$order->QuantityF}}F, {{$order->QuantityC}}C) @endif</td>
-                    <td>{{  $order->Price, 2 }}.00 Da</td>
-                    <td>{{ $order->Price * $order->Quantity,2 }}.00 Da</td>
-                   
-
-
-                </tr>
-               
                 
+
                 @php
-                    $total = $total + ($order->Price * $order->Quantity)
-                @endphp
+                $total = 0;
+            @endphp
+            @foreach($order_details as $order)
+
+            @if ($order->QuantityF > 0 || $order->QuantityC > 0 )
+            @php
+            $total = $total + ($order->Price * $order->Quantity * $order->product->meter_C)
+        @endphp
+            <tr>
+              <td>{{$order->product->Designation}}</td>
+              <td>{{$order->Quantity}}  ({{$order->QuantityF}}F, {{$order->QuantityC}}C)</td>
+              <td>{{ number_format($order->Price,2,'.',',')}} DA</td>
+              <td>{{ number_format($order->Price * $order->Quantity * $order->product->meter_C,2,'.',',')}} DA</td>
+             
+
+          </tr>
+                
+            @else
+
+            <tr>
+              <td>{{$order->product->Designation}}</td>
+              
+              @if ($order->product->Categorie == "Accessoires" || $order->product->Categorie == "Motif")
+              <td>{{$order->Quantity}} </td>
+              <td>{{ number_format($order->Price,2,'.',',')}} DA</td>
+              <td> {{ number_format($order->Price * $order->Quantity,2,'.',',')}} DA</td>
+                
+              @php
+                  $total = $total + ($order->Price * $order->Quantity )
+              @endphp
 
 
-                @endforeach
-                <tr>
-                  <td colspan="3" class="text-right">Total</td>
-                  <td>{{  $total , 2  }}.00 Da</td>
+              @else
+              <td>{{$order->Quantity}} </td>
+              <td>{{ number_format($order->Price,2,'.',',')}} DA</td>
+              <td>{{ number_format($order->Price * $order->Quantity * $order->product->meter_C ,2,'.',',')}} DA</td>
+                
+              @php
+                  $total = $total + ($order->Price * $order->Quantity * $order->product->meter_C)
+              @endphp
 
 
-                </tr>
+                  
+              @endif
+             
+
+          </tr>
+
+                
+            @endif
+
+
+          
+           
+
+              @endforeach
+              <tr>
+                <td colspan="3" class="text-right">Total</td>
+                <td>{{ number_format($total  ,2,'.',',')  }} DA</td>
+
+
+              </tr>
+          
+
+
+
+
             </tbody>
         </table>
         <br>

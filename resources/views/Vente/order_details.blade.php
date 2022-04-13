@@ -50,8 +50,8 @@
               <tr>
                 <td>{{$order->product->Designation}}</td>
                 <td>{{$order->Quantity}}  ({{$order->QuantityF}}F, {{$order->QuantityC}}C)</td>
-                <td>{{  $order->Price}} DA</td>
-                <td>{{ $order->Price * $order->Quantity * $order->product->meter_C  }} DA</td>
+                <td>{{ number_format($order->Price,2,'.',',')}} DA</td>
+                <td>{{ number_format($order->Price * $order->Quantity * $order->product->meter_C,2,'.',',')}} DA</td>
                 <td><a href=""  data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails({{$order->product->id}})" ><i class="fas fa-edit"></i></a>
     
                       <button onclick="deleteOrderDetails({{$order->id}})" id="btn{{$order->id}}" class='btn btn-danger'><i class="fas fa-trash"></i></button>
@@ -66,8 +66,8 @@
                 
                 @if ($order->product->Categorie == "Accessoires" || $order->product->Categorie == "Motif")
                 <td>{{$order->Quantity}} </td>
-                <td>{{  $order->Price }} DA</td>
-                <td>{{ $order->Price * $order->Quantity }} DA</td>
+                <td>{{ number_format($order->Price,2,'.',',')}} DA</td>
+                <td> {{ number_format($order->Price * $order->Quantity,2,'.',',')}} DA</td>
                   
                 @php
                     $total = $total + ($order->Price * $order->Quantity )
@@ -76,8 +76,8 @@
 
                 @else
                 <td>{{$order->Quantity}} </td>
-                <td>{{  $order->Price }} DA</td>
-                <td>{{ $order->Price * $order->Quantity * $order->product->meter_C }} DA</td>
+                <td>{{ number_format($order->Price,2,'.',',')}} DA</td>
+                <td>{{ number_format($order->Price * $order->Quantity * $order->product->meter_C ,2,'.',',')}} DA</td>
                   
                 @php
                     $total = $total + ($order->Price * $order->Quantity * $order->product->meter_C)
@@ -104,7 +104,7 @@
                 @endforeach
                 <tr>
                   <td colspan="3" class="text-right">Total</td>
-                  <td>{{  $total   }} DA</td>
+                  <td>{{ number_format($total  ,2,'.',',')  }} DA</td>
 
 
                 </tr>
@@ -422,8 +422,8 @@
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'</td>\
-                    <td> '+item.Price+' DA</td>\
-                    <td>'+item.Price * item.Quantity +' DA</td>\
+                    <td> '+(item.Price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
+                    <td>'+(item.Price * item.Quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -443,8 +443,8 @@
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
-                    <td> '+item.Price+' DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C +' DA</td>\
+                    <td> '+(item.Price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
+                    <td>'+(item.Price * item.Quantity * item.product.meter_C).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -456,8 +456,8 @@
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+' </td>\
-                    <td> '+item.Price+' DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C+' DA</td>\
+                    <td> '+item.Price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
+                    <td>'+(item.Price * item.Quantity * item.product.meter_C).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                   </form></td>\
@@ -473,7 +473,7 @@
              $('tbody').append('\
              <tr>\
                   <td colspan="3" class="text-right">Total</td>\
-                  <td>'+total+' DA</td>\
+                  <td>'+total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
                 </tr>');
 
                 setTimeout(function() { $('.success').text('');
@@ -685,8 +685,8 @@ $(function(){
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'</td>\
-                    <td> '+item.Price+' DA</td>\
-                    <td>'+item.Price * item.Quantity +' DA</td>\
+                    <td> '+item.Price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
+                    <td>'+(item.Price * item.Quantity).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -706,8 +706,8 @@ $(function(){
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'('+item.QuantityF+'F, '+item.QuantityC+'C) </td>\
-                    <td> '+item.Price+' DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C +' DA</td>\
+                    <td> '+(item.Price).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
+                    <td>'+(item.Price * item.Quantity * item.product.meter_C).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") +' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                  </td>\
@@ -719,8 +719,8 @@ $(function(){
                  <tr>\
                     <td>'+item.product.Designation+'</td>\
                     <td>'+item.Quantity+'  </td>\
-                    <td> '+item.Price+' DA</td>\
-                    <td>'+item.Price * item.Quantity * item.product.meter_C+' DA</td>\
+                    <td> '+item.Price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
+                    <td>'+(item.Price * item.Quantity * item.product.meter_C).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
                     <td><a href="" data-toggle="modal" data-target="#myModal2" class="btn btn-primary text-white" role="button" onclick="getOrderDetails('+item.product.id+')"><i class="fas fa-edit"></i></a>\
                           <button onclick="deleteOrderDetails('+item.id+')" id="btn'+item.id+'" class="btn btn-danger"><i class="fas fa-trash"></i></button>\
                   </form></td>\
@@ -739,7 +739,7 @@ $(function(){
              $('tbody').append('\
              <tr>\
                   <td colspan="3" class="text-right">Total</td>\
-                  <td>'+total+' DA</td>\
+                  <td>'+total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")+' DA</td>\
                 </tr>')
 
                }

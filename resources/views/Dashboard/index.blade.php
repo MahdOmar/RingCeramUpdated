@@ -276,7 +276,7 @@
                     <div class="row">
                       <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0">Today Sales</h5>
-                        <span class="h2 font-weight-bold mb-0">{{ $salesToday }} DA</span>
+                        <span class="h2 font-weight-bold mb-0">{{ number_format($salesToday   ,2,'.',',') }} DA</span>
                       </div>
                       <div class="col-auto">
                         <div class="">
@@ -295,7 +295,7 @@
                     <div class="row">
                       <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0">Yesterday Sales</h5>
-                        <span class="h2 font-weight-bold mb-0">{{ $salesYes }} DA</span>
+                        <span class="h2 font-weight-bold mb-0">{{  number_format($salesYes   ,2,'.',',')   }} DA</span>
                       </div>
                       <div class="col-auto">
                         <div>
@@ -314,7 +314,7 @@
                     <div class="row">
                       <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0">Total Sales</h5>
-                        <span class="h2 font-weight-bold mb-0">{{ $salesLw }} DA</span>
+                        <span class="h2 font-weight-bold mb-0">{{number_format($salesLw   ,2,'.',',') }} DA</span>
                       </div>
                       <div class="col-auto">
                         <div class="">
@@ -334,7 +334,7 @@
                     <div class="row">
                       <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0">Total Revenue</h5>
-                        <span class="h2 font-weight-bold mb-0">{{ $income }} DA</span>
+                        <span class="h2 font-weight-bold mb-0">{{number_format($income   ,2,'.',',')   }} DA</span>
                       </div>
                       <div class="col-auto">
                         <div class="">
@@ -380,22 +380,22 @@
                       <td>{{$sale->total}} </td>
                       <td>@if (isset($sale->meter_C))
 
-                        {{$sale->total * $sale->Price * $sale->meter_C}} DA
+                        {{ number_format($sale->total * $sale->Price * $sale->meter_C  ,2,'.',',')  }} DA
                           
                       @else
 
-                      {{$sale->total * $sale->Price }} DA
+                      {{ number_format( $sale->total * $sale->Price   ,2,'.',',')}} DA
                           
                       @endif </td>
                     
                       <td >
                         @if (isset($sale->meter_C))
 
-                      <p class="badge badge-success">  {{$sale->total * $sale->Price * $sale->meter_C - ($sale->total * $sale->Price_A * $sale->meter_C)}} DA </p>
+                      <p class="badge badge-success">  {{ number_format($sale->total * $sale->Price * $sale->meter_C - ($sale->total * $sale->Price_A * $sale->meter_C)   ,2,'.',',')   }} DA </p>
                           
                       @else
 
-                   <p class="badge badge-success">   {{$sale->total * $sale->Price - ($sale->total * $sale->Price_A ) }} DA </p>
+                   <p class="badge badge-success">   {{ number_format($sale->total * $sale->Price - ($sale->total * $sale->Price_A ) ,2,'.',',')     }} DA </p>
                           
                       @endif 
 
